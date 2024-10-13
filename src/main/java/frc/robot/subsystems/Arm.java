@@ -20,7 +20,7 @@ public class Arm extends SubsystemBase {
   private final CANSparkMax leftArm = new CANSparkMax(14, MotorType.kBrushless);
   private final CANSparkMax rightArm = new CANSparkMax(15, MotorType.kBrushless);
   private final SparkAbsoluteEncoder armEncoder = rightArm.getAbsoluteEncoder(Type.kDutyCycle);
-  private PIDController armController = new PIDController(0.013, 0.0001, 0.001);
+  private PIDController armController = new PIDController(0.011, 0.00, 0.014);  //p = 0.011 d = 0.014
   private double temp = 0.0;
   
   public Arm() {
@@ -32,6 +32,8 @@ public class Arm extends SubsystemBase {
     rightArm.setIdleMode(IdleMode.kBrake);
     rightArm.setOpenLoopRampRate(1.0);
     temp = 0.0;
+    armController.disableContinuousInput();
+    armController.setTolerance(0.001);
   }
 
   @Override
@@ -54,9 +56,13 @@ public class Arm extends SubsystemBase {
   }
 
   public void setArmPos(double degrees){
-      temp = -armController.calculate(this.getEncoderinDegrees(), degrees);
-      MathUtil.clamp(temp, -0.5, 0.5);
-      this.setArm(temp);
+    System.out.println("ENC DEGREES: " + this.getEncoderinDegrees());
+    System.out.println("COMMAND DEGREE: " + degrees);
+    System.out.println();
+    temp = -armController.calculate(this.getEncoderinDegrees(), degrees);
+    MathUtil.clamp(temp, -0.5, 0.5);
+    System.out.println(temp);
+    this.setArm(temp);
   }
 
   public double getEncoderinDegrees(){

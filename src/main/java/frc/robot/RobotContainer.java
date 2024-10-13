@@ -1,9 +1,9 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+/* import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.PathPlannerPath; */
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -63,7 +63,9 @@ public class RobotContainer {
     private final JoystickButton intakeNote = new JoystickButton(aux, PS4Controller.Button.kL1.value);
     private final JoystickButton outtakeNote = new JoystickButton(aux, PS4Controller.Button.kR1.value);
     private final JoystickButton activateShooter = new JoystickButton(aux, PS4Controller.Button.kR3.value);
-    private final JoystickButton AutoArm = new JoystickButton(aux, PS4Controller.Button.kCircle.value);
+    /* private final JoystickButton armUp = new JoystickButton(aux, PS4Controller.Button.kTriangle.value);
+    private final JoystickButton armDown = new JoystickButton(aux, PS4Controller.Button.kCross.value); */
+    //private final JoystickButton AutoArm = new JoystickButton(aux, PS4Controller.Button.kCircle.value);
     private final JoystickButton armGround = new JoystickButton(aux, PS4Controller.Button.kCross.value);
     private final JoystickButton armIdle = new JoystickButton(aux, PS4Controller.Button.kSquare.value);
     private final JoystickButton armAmp = new JoystickButton(aux, PS4Controller.Button.kTriangle.value);
@@ -78,9 +80,9 @@ public class RobotContainer {
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
     public RobotContainer() {
         // (PathPlanner) Registering Named Commands:
-        NamedCommands.registerCommand("SpeakerShot", new SpeakerShot(s_Swerve, s_Arm, s_Intake, s_Limelight));
+        /* NamedCommands.registerCommand("SpeakerShot", new SpeakerShot(s_Swerve, s_Arm, s_Intake, s_Limelight));
         NamedCommands.registerCommand("AmpShot", new AmpShot(s_Swerve, s_Arm, s_Intake, s_Limelight));
-        NamedCommands.registerCommand("GroundPickup", new GroundPickup(s_Swerve, s_Arm, s_Intake, s_Limelight));
+        NamedCommands.registerCommand("GroundPickup", new GroundPickup(s_Swerve, s_Arm, s_Intake, s_Limelight)); */
 
         // USB Camera Startup:
         CameraServer.startAutomaticCapture();  
@@ -101,18 +103,18 @@ public class RobotContainer {
         s_Climber.setDefaultCommand(new RunCommand(() -> s_Climber.stop(), s_Climber));
 
         // (PathPlanner) Build an auto chooser. This will use Commands.none() as the default option.
-        m_chooser = AutoBuilder.buildAutoChooser();
+        m_chooser = null;
 
         // Adding options to Autonomous Chooser:
-        m_chooser.addOption("1 Piece", AutoBuilder.buildAuto("1 Piece"));
-        m_chooser.addOption("2 Piece", AutoBuilder.buildAuto("2 Piece"));
+       /*  m_chooser.addOption("1 Piece", AutoBuilder.buildAuto("1 Piece"));
+        m_chooser.addOption("2 Piece", AutoBuilder.buildAuto("2 Piece")); */
 
         // NON PathPlanner:
         /* m_chooser.setDefaultOption("Defualt", new Taxi(s_Swerve));
         m_chooser.addOption("TEST: SpeakerShot", new SpeakerShot(null, s_Arm, s_Intake, s_Limelight)); */
 
         //Publish Autonomous Mode Chooser to SmartDashboard
-        SmartDashboard.putData("Auto Chooser", m_chooser);
+        //SmartDashboard.putData("Auto Chooser", m_chooser);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -162,16 +164,16 @@ public class RobotContainer {
         outtakeNote.onFalse(new RunCommand(()-> s_Intake.stopIntake(), s_Intake));
         activateShooter.toggleOnTrue(new RunCommand(()-> s_Intake.shootNote(), s_Intake));
 
-/*         armAmp.onTrue(new RunCommand(() -> s_Arm.forward(), s_Arm));
-        armAmp.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm));
+        /* armUp.onTrue(new RunCommand(() -> s_Arm.forward(), s_Arm));
+        armUp.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm));
 
-        armGround.onTrue(new RunCommand(() -> s_Arm.backward(), s_Arm));
-        armGround.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm)); */
+        armDown.onTrue(new RunCommand(() -> s_Arm.backward(), s_Arm));
+        armDown.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm)); */
 
 
 
-        AutoArm.onTrue(new SpeakerAutoArm(s_Limelight, s_Arm));
-        AutoArm.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm));
+        //AutoArm.onTrue(new SpeakerAutoArm(s_Limelight, s_Arm));
+        //AutoArm.onFalse(new RunCommand(() -> s_Arm.stop(), s_Arm));
         armGround.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armGroundPOS), s_Arm));
         armIdle.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armIdlePOS), s_Arm));
         armAmp.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armAmpPOS), s_Arm));
@@ -184,6 +186,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return m_chooser.getSelected();
+        return null;
     }
 }
