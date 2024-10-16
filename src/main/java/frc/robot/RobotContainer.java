@@ -1,10 +1,9 @@
 package frc.robot;
 
-/* import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath; */
-
+import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -40,7 +39,7 @@ public class RobotContainer {
     //private final SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 
     // Pathplanner:
-    private final SendableChooser<Command> m_chooser;
+    //private final SendableChooser<Command> m_chooser;
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -63,9 +62,9 @@ public class RobotContainer {
     private final JoystickButton intakeNote = new JoystickButton(aux, PS4Controller.Button.kL1.value);
     private final JoystickButton outtakeNote = new JoystickButton(aux, PS4Controller.Button.kR1.value);
     private final JoystickButton activateShooter = new JoystickButton(aux, PS4Controller.Button.kR3.value);
-    /* private final JoystickButton armUp = new JoystickButton(aux, PS4Controller.Button.kTriangle.value);
-    private final JoystickButton armDown = new JoystickButton(aux, PS4Controller.Button.kCross.value); */
-    //private final JoystickButton AutoArm = new JoystickButton(aux, PS4Controller.Button.kCircle.value);
+    //private final JoystickButton armUp = new JoystickButton(aux, PS4Controller.Button.kTriangle.value);
+    //private final JoystickButton armDown = new JoystickButton(aux, PS4Controller.Button.kCross.value);
+    private final JoystickButton armBackshot = new JoystickButton(aux, PS4Controller.Button.kCircle.value);
     private final JoystickButton armGround = new JoystickButton(aux, PS4Controller.Button.kCross.value);
     private final JoystickButton armIdle = new JoystickButton(aux, PS4Controller.Button.kSquare.value);
     private final JoystickButton armAmp = new JoystickButton(aux, PS4Controller.Button.kTriangle.value);
@@ -93,7 +92,7 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> driver.getRawAxis(translationAxis), 
                 () -> driver.getRawAxis(strafeAxis), 
-                () -> driver.getRawAxis(rotationAxis), 
+                () -> -driver.getRawAxis(rotationAxis), 
                 () -> robotCentric.getAsBoolean(),
                 () -> speed.getAsBoolean()
             )
@@ -103,10 +102,10 @@ public class RobotContainer {
         s_Climber.setDefaultCommand(new RunCommand(() -> s_Climber.stop(), s_Climber));
 
         // (PathPlanner) Build an auto chooser. This will use Commands.none() as the default option.
-        m_chooser = null;
+        //m_chooser = null;
 
         // Adding options to Autonomous Chooser:
-       /*  m_chooser.addOption("1 Piece", AutoBuilder.buildAuto("1 Piece"));
+        /* m_chooser.addOption("1 Piece", AutoBuilder.buildAuto("1 Piece"));
         m_chooser.addOption("2 Piece", AutoBuilder.buildAuto("2 Piece")); */
 
         // NON PathPlanner:
@@ -177,6 +176,8 @@ public class RobotContainer {
         armGround.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armGroundPOS), s_Arm));
         armIdle.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armIdlePOS), s_Arm));
         armAmp.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armAmpPOS), s_Arm));
+        armBackshot.onTrue(new RunCommand(() -> s_Arm.setArmPos(Constants.armBackshotPOS), s_Arm));
+        
    
     }
 
@@ -186,6 +187,6 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        return null;
+        return new SpeakerShot(s_Swerve, s_Arm, s_Intake, s_Limelight);
     }
 }

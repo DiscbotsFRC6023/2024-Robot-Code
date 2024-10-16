@@ -25,7 +25,7 @@ public class SpeakerShot extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new RunCommand(() -> s_Arm.setArmPos(Constants.armIdlePOS), s_Arm).withTimeout(4.0),
+      new RunCommand(() -> s_Arm.setArmPos(Constants.armIdlePOS), s_Arm).withTimeout(2.0),
       new RunCommand(() -> s_Intake.shootNote(), s_Intake).withTimeout(1.0),
       new shootIntake(s_Intake).withTimeout(2.0),
       new InstantCommand(() -> s_Intake.stopAll(), s_Intake)

@@ -51,6 +51,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void setArm(double power){
+    System.out.println("ENC DEGREES: " + this.getEncoderinDegrees());
     rightArm.set(-power);
     leftArm.set(power);
   }
@@ -74,6 +75,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void stop(){
+    System.out.println("ENC DEGREES: " + this.getEncoderinDegrees());
     rightArm.set(0.0);
     leftArm.set(0.0);
   }
